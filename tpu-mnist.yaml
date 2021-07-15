@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: mnist-tpu
 spec:
+  backoffLimit: 0
   template:
     metadata:
       annotations:
