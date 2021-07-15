@@ -19,7 +19,8 @@ strategy = tf.distribute.MirroredStrategy()
 '''
 
 #Initialize the TPU cluster
-tpu = tf.distribute.cluster_resolver.TPUClusterResolver(tpu="node-1")
+#tpu = tf.distribute.cluster_resolver.TPUClusterResolver(tpu="node-1")
+tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
 print("Running on TPU ", tpu.master())
 
 tf.config.experimental_connect_to_cluster(tpu)
@@ -92,7 +93,7 @@ test_dataset = get_dataset(batch_size, is_training=False)
 model.fit(train_dataset,
 					epochs=5,
 					steps_per_epoch=steps_per_epoch,
-					validation_data=test_dataset, 
+					validation_data=test_dataset,
 					validation_steps=validation_steps)
 '''
 
@@ -190,5 +191,3 @@ plt.legend(ncol=2, loc='lower right')
 plt.gcf().set_size_inches(20, 20)
 plt.savefig("Lossplot_.jpg")
 plt.close()
-
-

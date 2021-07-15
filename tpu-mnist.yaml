@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mnist-tpu
+spec:
+  template:
+    metadata:
+      annotations:
+        # The Cloud TPUs that will be created for this Job will support
+        # TensorFlow 2.3. This version MUST match the
+        # TensorFlow version that your model is built on.
+        tf-version.cloud-tpus.google.com: "2.3"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: mnist-tpu
+        # The official TensorFlow 2.3.0 image.
+        # https://hub.docker.com/r/tensorflow/tensorflow
+        # image: tensorflow/tensorflow:2.3.0
+        image: sneumann/bozen-tputorial
+        command:
+        - bash
+        - -c
+        - |
+          pip install tensorflow_datasets
+          python3 Train_MNIST_TPU.py
+        resources:
+          limits:
+            # Request a single Preemptible v2-8 Cloud TPU device to train the
+            # model. A single v2-8 Cloud TPU device consists of 4 chips, each of
+            # which has 2 cores, so there are 8 cores in total.
+            cloud-tpus.google.com/preemptible-v3: 8
